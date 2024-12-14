@@ -1,4 +1,21 @@
+# Python
 __pycache__/
-*.pyc
-.idea/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
 venv/
+env/
+
+# Logs
+*.log
+
+# Database files
+*.sqlite3
+*.db
+
+# Environment variables
+.env
+
+# IDE files
+.idea/
