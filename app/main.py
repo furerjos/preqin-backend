@@ -1,12 +1,18 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.routers import investors
-from app.database import Base, engine
 
-# Initialize the database
-Base.metadata.create_all(bind=engine)
+app = FastAPI()
 
-# Create FastAPI app instance
-app = FastAPI(docs_url=None, redoc_url=None)
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    # Ensuring my frontend won't run into CORS errors
+    allow_origins=["http://localhost:3000"],  # Frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Include routers
-app.include_router(investors.router, prefix="/api", tags=["investors"])
+app.include_router(investors.router, prefix="/api")

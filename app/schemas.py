@@ -12,10 +12,11 @@ class Commitment(BaseModel):
 class Investor(BaseModel):
     id: int
     name: str
-    type: Optional[str]  # Allow None
-    country: Optional[str]  # Allow None
-    date_added: Optional[str]  # Allow None
-    last_updated: Optional[str]  # Allow None
+    type: str
+    country: str
+    total_commitments: float
+    date_added: str
+    last_updated: str
     commitments: List[Commitment]
 
     class Config:

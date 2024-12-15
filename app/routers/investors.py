@@ -27,7 +27,22 @@ def serialize_investor(investor: Investor) -> dict:
 @router.get("/investors", response_model=list[InvestorSchema])
 def get_investors(db: Session = Depends(get_db)):
     investors = db.query(Investor).all()
-    return [serialize_investor(investor) for investor in investors]
+    return [
+        {
+            "id": investor.id,
+            "name": investor.name,
+            "type": investor.type,
+            "country": investor.country,
+            "total_commitments": sum(c.amount for c in investor.commitments),  # Calculates total commitments per investor
+            "date_added": investor.date_added.isoformat() if investor.date_added else None,
+            "last_updated": investor.last_updated.isoformat() if investor.last_updated else None,
+            "commitments": [
+                {"asset_class": c.asset_class, "amount": c.amount, "currency": c.currency}
+                for c in investor.commitments
+            ],
+        }
+        for investor in investors
+    ]
 
 
 @router.get("/investors/{investor_id}", response_model=InvestorSchema)
